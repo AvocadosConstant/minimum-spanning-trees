@@ -30,12 +30,10 @@ int main(int argc, char* argv[]) {
         return -1;
     }
     
-
     AdjacencyList list;
     AdjacencyMatrix matrix;
+    
     ReadInput(argv[1], list, matrix);
-
-    print_matrix(matrix);
 }
 
 
@@ -56,10 +54,9 @@ void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix) {
     int v1, v2, weight;
     for (int i = 0; i < number_of_edges; i++) {
         input_file >> v1 >> v2 >> weight;
+
         add_to_list(list, v1, v2, weight);
         add_to_matrix(matrix, v1, v2, weight);
-
-        
     }
     input_file.close();
 }
