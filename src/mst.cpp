@@ -1,4 +1,5 @@
-// Contains the implementations of four different minimum spanning tree algorithm
+// Contains the implementations of four different minimum spanning tree 
+// algorithms
 
 #include <iostream>
 #include <fstream>
@@ -13,6 +14,7 @@ struct Node {
 typedef std::vector< std::forward_list<Node> > AdjacencyList;
 typedef std::vector< std::vector<int> > AdjacencyMatrix;
 
+
 void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix);
 
 void adjust_list(AdjacencyList &list, int v);
@@ -24,6 +26,7 @@ void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight);
 void print_list(AdjacencyList &list);
 void print_matrix(AdjacencyMatrix &matrix);
 
+
 int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::cerr << "Please provide 2 filenames." << std::endl;
@@ -34,6 +37,9 @@ int main(int argc, char* argv[]) {
     AdjacencyMatrix matrix;
     
     ReadInput(argv[1], list, matrix);
+
+    print_list(list);
+    print_matrix(matrix);
 }
 
 
@@ -99,7 +105,17 @@ void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight) {
 }
 
 void print_list(AdjacencyList &list) {
+    std::cout << "Adjacency List" << std::endl;
 
+    for (int i = 0; i < list.size(); i++) {
+        std::cout << i << ":\t";
+
+        for (auto n = list[i].begin(); n != list[i].end(); n++) {
+            std::cout << "[" << n->destination << "," << n->weight << "]\t";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
 }
 
 void print_matrix(AdjacencyMatrix &matrix) {
