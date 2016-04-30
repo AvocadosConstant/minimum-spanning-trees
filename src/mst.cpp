@@ -29,12 +29,13 @@ int main(int argc, char* argv[]) {
         std::cerr << "Please provide 2 filenames." << std::endl;
         return -1;
     }
+    
 
     AdjacencyList list;
     AdjacencyMatrix matrix;
-
     ReadInput(argv[1], list, matrix);
 
+    print_matrix(matrix);
 }
 
 
@@ -55,7 +56,6 @@ void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix) {
     int v1, v2, weight;
     for (int i = 0; i < number_of_edges; i++) {
         input_file >> v1 >> v2 >> weight;
-
         add_to_list(list, v1, v2, weight);
         add_to_matrix(matrix, v1, v2, weight);
 
@@ -79,8 +79,9 @@ void adjust_list(AdjacencyList &list, int v) {
 void adjust_matrix(AdjacencyMatrix &matrix, int v) {
     matrix.resize(v);
 
-    for (auto row : matrix)
-        row.resize(v, 0);
+    for (int i = 0; i < v; i++) {
+        matrix[i].resize(v,0);
+    }
 }
 
 void add_to_list(AdjacencyList &list, int v1, int v2, int weight) {
@@ -96,15 +97,30 @@ void add_to_list(AdjacencyList &list, int v1, int v2, int weight) {
 }
 
 void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight) {
-        matrix[v1][v2] = weight;
-        matrix[v2][v1] = weight;
+    matrix[v1][v2] = weight;
+    matrix[v2][v1] = weight;
 }
 
 void print_list(AdjacencyList &list) {
-    
+
 }
 
 void print_matrix(AdjacencyMatrix &matrix) {
+    std::cout << "Adjacency Matrix" << std::endl;
 
+    std::cout << "\t";
+    for (int i = 0; i < matrix.size(); i++) {
+        std::cout << i << "\t";
+    }
+    std::cout << std::endl;
+
+    for (int i = 0; i < matrix.size(); i++) {
+        std::cout << i << "\t";
+        for (int j = 0; j < matrix[i].size(); j++) {
+            std::cout << matrix[i][j] << "\t";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
 }
 
