@@ -95,7 +95,19 @@ ns Prim(AdjacencyList &list) {
     Clock::time_point start, end;
     start = Clock::now();
 
-
+    /* PSEUDOCODE
+     *
+     * Q = V
+     * key[v] = infinity for all v in V
+     * key[s] = 0 // s is the starting vertex
+     *
+     * while (!Q.empty()):
+     *      u = Q.extract_min()
+     *      for each v adjacent to u:
+     *          if (v in Q and u->v.weight < key[v]):
+     *              key[v] = u->v.weight
+     *              pi[v] = u
+     */
 
     // stop clock and return time
     end = Clock::now();
@@ -108,7 +120,19 @@ ns Prim(AdjacencyMatrix &matrix) {
     Clock::time_point start, end;
     start = Clock::now();
 
-
+    /* PSEUDOCODE
+     *
+     * Q = V
+     * key[v] = infinity for all v in V
+     * key[s] = 0 // s is the starting vertex
+     *
+     * while (!Q.empty()):
+     *      u = Q.extract_min()
+     *      for each v adjacent to u:
+     *          if (v in Q and u->v.weight < key[v]):
+     *              key[v] = u->v.weight
+     *              pi[v] = u
+     */
 
     // stop clock and return time
     end = Clock::now();
@@ -121,7 +145,17 @@ ns Kruskal(AdjacencyList &list) {
     Clock::time_point start, end;
     start = Clock::now();
 
-
+    /* PSEUDOCODE
+     *
+     * A = null // A is a list of edges. stores MST
+     *
+     * form a set out of each vertex
+     * sort the edges into nondecreasing order by weight
+     * loop through each e in sorted edges:
+     *      if the two sets u,v (vertices of e) are disjoint:
+     *          add the edge to A
+     *          unite the two sets u + v
+    */
 
     // stop clock and return time
     end = Clock::now();
@@ -134,7 +168,17 @@ ns Kruskal(AdjacencyMatrix &matrix) {
     Clock::time_point start, end;
     start = Clock::now();
 
-
+    /* PSEUDOCODE
+     *
+     * A = null // A is a list of edges. stores MST
+     *
+     * form a set out of each vertex
+     * sort the edges into nondecreasing order by weight
+     * loop through each e in sorted edges:
+     *      if the two sets u,v (vertices of e) are disjoint:
+     *          add the edge to A
+     *          unite the two sets u + v
+    */
 
     // stop clock and return time
     end = Clock::now();
