@@ -20,10 +20,10 @@ typedef std::chrono::nanoseconds ns;
 
 void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix);
 void SaveResults(char* filename, ns plist, ns pmatrix, ns klist, ns kmatrix);
-void Prim(AdjacencyList &list);
-void Prim(AdjacencyMatrix &matrix);
-void Kruskal(AdjacencyList &list);
-void Kruskal(AdjacencyMatrix &matrix);
+ns Prim(AdjacencyList &list);
+ns Prim(AdjacencyMatrix &matrix);
+ns Kruskal(AdjacencyList &list);
+ns Kruskal(AdjacencyMatrix &matrix);
 
 void adjust_list(AdjacencyList &list, int v);
 void adjust_matrix(AdjacencyMatrix &matrix, int v);
@@ -44,32 +44,13 @@ int main(int argc, char* argv[]) {
     
     ReadInput(argv[1], list, matrix);
 
+    ns t_prim_list = Prim(list);
+    ns t_prim_matrix = Prim(matrix);
+    ns t_kruskal_list = Kruskal(list);
+    ns t_kruskal_matrix = Kruskal(matrix);
 
-    Clock::time_point start, end;
-
-    start = Clock::now();
-    Prim(list); // Prim with adjacency list
-    end = Clock::now();
-    ns prim_list_time = std::chrono::duration_cast<ns> (end - start);
-
-    start = Clock::now();
-    Prim(matrix); // Prim with adjacency matrix
-    end = Clock::now();
-    ns prim_matrix_time = std::chrono::duration_cast<ns> (end - start);
-
-    start = Clock::now();
-    Kruskal(list); // Kruskal with adjacency list
-    end = Clock::now();
-    ns kruskal_list_time = std::chrono::duration_cast<ns> (end - start);
-
-    start = Clock::now();
-    Kruskal(matrix); // Kruskal with adjacency matrix
-    end = Clock::now();
-    ns kruskal_matrix_time = std::chrono::duration_cast<ns> (end - start);
-
-
-    SaveResults(argv[2], prim_list_time, prim_matrix_time, 
-            kruskal_list_time, kruskal_matrix_time);
+    SaveResults(argv[2], t_prim_list, t_prim_matrix, 
+            t_kruskal_list, t_kruskal_matrix);
 }
 
 
@@ -109,23 +90,55 @@ void SaveResults(char* filename, ns plist, ns pmatrix, ns klist, ns kmatrix) {
 }
 
 // Prim with an adjacency list 
-void Prim(AdjacencyList &list) {
+ns Prim(AdjacencyList &list) {
+    // start clock
+    Clock::time_point start, end;
+    start = Clock::now();
 
+
+
+    // stop clock and return time
+    end = Clock::now();
+    return std::chrono::duration_cast<ns> (end - start);
 }
 
 // Prim with an adjacency matrix
-void Prim(AdjacencyMatrix &matrix) {
+ns Prim(AdjacencyMatrix &matrix) {
+    // start clock
+    Clock::time_point start, end;
+    start = Clock::now();
 
+
+
+    // stop clock and return time
+    end = Clock::now();
+    return std::chrono::duration_cast<ns> (end - start);
 }
 
 // Kruskal with an adjacency list 
-void Kruskal(AdjacencyList &list) {
+ns Kruskal(AdjacencyList &list) {
+    // start clock
+    Clock::time_point start, end;
+    start = Clock::now();
 
+
+
+    // stop clock and return time
+    end = Clock::now();
+    return std::chrono::duration_cast<ns> (end - start);
 }
 
 // Kruskal with an adjacency matrix
-void Kruskal(AdjacencyMatrix &matrix) {
+ns Kruskal(AdjacencyMatrix &matrix) {
+    // start clock
+    Clock::time_point start, end;
+    start = Clock::now();
 
+
+
+    // stop clock and return time
+    end = Clock::now();
+    return std::chrono::duration_cast<ns> (end - start);
 }
 
 
