@@ -15,10 +15,11 @@ struct Node {
 typedef std::vector< std::forward_list<Node> > AdjacencyList;
 typedef std::vector< std::vector<int> > AdjacencyMatrix;
 
-typedef std::chrono:high_resolution_clock Clock;
+typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::nanoseconds ns;
 
 void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix);
+void SaveResults(char* filename, ns plist, ns pmatrix, ns klist, ns kmatrix);
 void Prim(AdjacencyList &list);
 void Prim(AdjacencyMatrix &matrix);
 void Kruskal(AdjacencyList &list);
@@ -43,6 +44,7 @@ int main(int argc, char* argv[]) {
     
     ReadInput(argv[1], list, matrix);
 
+
     Clock::time_point start, end;
 
     start = Clock::now();
@@ -64,6 +66,10 @@ int main(int argc, char* argv[]) {
     Kruskal(matrix); // Kruskal with adjacency matrix
     end = Clock::now();
     ns kruskal_matrix_time = std::chrono::duration_cast<ns> (end - start);
+
+
+    SaveResults(argv[2], prim_list_time, prim_matrix_time, 
+            kruskal_list_time, kruskal_matrix_time);
 }
 
 
@@ -92,6 +98,15 @@ void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix) {
 }
 
 // Output handler
+void SaveResults(char* filename, ns plist, ns pmatrix, ns klist, ns kmatrix) {
+    std::ofstream output_file;
+    output_file.open(filename);
+
+    output_file << plist << ", " << pmatrix << ", " 
+        << klist << ", " << kmatrix << std::endl;
+
+    output_file.close();
+}
 
 // Prim with an adjacency list 
 void Prim(AdjacencyList &list) {
