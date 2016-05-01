@@ -226,7 +226,7 @@ void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight) {
 void print_list(AdjacencyList &list) {
     std::cout << "Adjacency List" << std::endl;
 
-    for (int i = 0; i < list.size(); i++) {
+    for (unsigned int i = 0; i < list.size(); i++) {
         std::cout << i << ":\t";
 
         for (auto n = list[i].begin(); n != list[i].end(); n++) {
@@ -241,14 +241,14 @@ void print_matrix(AdjacencyMatrix &matrix) {
     std::cout << "Adjacency Matrix" << std::endl;
 
     std::cout << "\t";
-    for (int i = 0; i < matrix.size(); i++) {
+    for (unsigned int i = 0; i < matrix.size(); i++) {
         std::cout << i << "\t";
     }
     std::cout << std::endl;
 
-    for (int i = 0; i < matrix.size(); i++) {
+    for (unsigned int i = 0; i < matrix.size(); i++) {
         std::cout << i << "\t";
-        for (int j = 0; j < matrix[i].size(); j++) {
+        for (unsigned int j = 0; j < matrix[i].size(); j++) {
             std::cout << matrix[i][j] << "\t";
         }
         std::cout << std::endl;
