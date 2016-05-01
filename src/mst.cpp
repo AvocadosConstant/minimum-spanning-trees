@@ -102,8 +102,8 @@ void SaveResults(char* filename, ns plist, ns pmatrix, ns klist, ns kmatrix) {
     std::ofstream output_file;
     output_file.open(filename);
 
-    output_file << plist << ", " << pmatrix << ", " 
-        << klist << ", " << kmatrix << std::endl;
+    output_file << plist.count() << ", " << pmatrix.count() << ", " 
+        << klist.count() << ", " << kmatrix.count() << std::endl;
 
     output_file.close();
 }
