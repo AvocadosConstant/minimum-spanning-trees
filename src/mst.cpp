@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <forward_list>
+#include <chrono>
 
 struct Node {
     int destination;
@@ -14,15 +15,19 @@ struct Node {
 typedef std::vector< std::forward_list<Node> > AdjacencyList;
 typedef std::vector< std::vector<int> > AdjacencyMatrix;
 
+typedef std::chrono:high_resolution_clock Clock;
+typedef std::chrono::nanoseconds ns;
 
 void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix);
+void Prim(AdjacencyList &list);
+void Prim(AdjacencyMatrix &matrix);
+void Kruskal(AdjacencyList &list);
+void Kruskal(AdjacencyMatrix &matrix);
 
 void adjust_list(AdjacencyList &list, int v);
 void adjust_matrix(AdjacencyMatrix &matrix, int v);
-
 void add_to_list(AdjacencyList &list, int v1, int v2, int weight);
 void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight);
-
 void print_list(AdjacencyList &list);
 void print_matrix(AdjacencyMatrix &matrix);
 
@@ -38,8 +43,27 @@ int main(int argc, char* argv[]) {
     
     ReadInput(argv[1], list, matrix);
 
-    print_list(list);
-    print_matrix(matrix);
+    Clock::time_point start, end;
+
+    start = Clock::now();
+    Prim(list); // Prim with adjacency list
+    end = Clock::now();
+    ns prim_list_time = std::chrono::duration_cast<ns> (end - start);
+
+    start = Clock::now();
+    Prim(matrix); // Prim with adjacency matrix
+    end = Clock::now();
+    ns prim_matrix_time = std::chrono::duration_cast<ns> (end - start);
+
+    start = Clock::now();
+    Kruskal(list); // Kruskal with adjacency list
+    end = Clock::now();
+    ns kruskal_list_time = std::chrono::duration_cast<ns> (end - start);
+
+    start = Clock::now();
+    Kruskal(matrix); // Kruskal with adjacency matrix
+    end = Clock::now();
+    ns kruskal_matrix_time = std::chrono::duration_cast<ns> (end - start);
 }
 
 
@@ -68,10 +92,26 @@ void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix) {
 }
 
 // Output handler
+
 // Prim with an adjacency list 
+void Prim(AdjacencyList &list) {
+
+}
+
 // Prim with an adjacency matrix
+void Prim(AdjacencyMatrix &matrix) {
+
+}
+
 // Kruskal with an adjacency list 
+void Kruskal(AdjacencyList &list) {
+
+}
+
 // Kruskal with an adjacency matrix
+void Kruskal(AdjacencyMatrix &matrix) {
+
+}
 
 
 // Helper Functions
@@ -88,6 +128,7 @@ void adjust_matrix(AdjacencyMatrix &matrix, int v) {
 }
 
 void add_to_list(AdjacencyList &list, int v1, int v2, int weight) {
+// TODO: should we handle single cycle edges?
     Node n1;
     n1.weight = weight;
     n1.destination = v2;
