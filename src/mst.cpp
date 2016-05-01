@@ -51,6 +51,10 @@ int main(int argc, char* argv[]) {
 
     SaveResults(argv[2], t_prim_list, t_prim_matrix, 
             t_kruskal_list, t_kruskal_matrix);
+
+    
+    print_matrix(matrix);
+    print_list(list);
 }
 
 
@@ -200,7 +204,9 @@ void adjust_matrix(AdjacencyMatrix &matrix, int v) {
 }
 
 void add_to_list(AdjacencyList &list, int v1, int v2, int weight) {
-// TODO: should we handle single cycle edges?
+    if (v1 == v2) 
+        return;
+    
     Node n1;
     n1.weight = weight;
     n1.destination = v2;

@@ -1,6 +1,8 @@
 # Stuff
 *~
 *.swp
+MinimumSpanningTree
+output*
 
 # Compiled Object files
 *.slo
