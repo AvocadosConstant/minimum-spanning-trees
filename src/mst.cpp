@@ -13,6 +13,9 @@ struct Node {
     int weight;
 };
 
+typedef std::vector< std::forward_list<Node> > AdjacencyList;
+typedef std::vector< std::vector<int> > AdjacencyMatrix;
+
 // Data structures for Kruskal's algorithms
 struct Edge {
     int v1;
@@ -24,9 +27,6 @@ typedef std::vector<Edge> EdgeContainer;
 typedef std::vector<int> VectorSet;
 
 // Data structures for timekeeping
-typedef std::vector< std::forward_list<Node> > AdjacencyList;
-typedef std::vector< std::vector<int> > AdjacencyMatrix;
-
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::nanoseconds ns;
 
