@@ -172,6 +172,22 @@ ns Kruskal(AdjacencyList &list) {
      *          add the edge to A
      *          unite the two sets u + v
     */
+    
+    EdgeContainer all_edges;
+    // ReadEdgesFromList(list, all_edges);
+    // Sort Edges, smallest first
+
+    VectorSet set;
+    // Resize set to number of vectors
+    // Initialize set
+
+    EdgeContainer mst;
+
+    for (Edge e : all_edges) {
+        // compare v1 and v2 in disjoint_set
+        // add edge to mst
+        // unite v1 and v2
+    }
 
     // stop clock and return time
     end = Clock::now();
