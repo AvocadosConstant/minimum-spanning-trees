@@ -7,11 +7,23 @@
 #include <forward_list>
 #include <chrono>
 
+// Data structures for graph representations
 struct Node {
     int destination;
     int weight;
 };
 
+// Data structures for Kruskal's algorithms
+struct Edge {
+    int v1;
+    int v2;
+    int weight;
+};
+
+typedef std::vector<Edge> EdgeContainer;
+typedef std::vector<int> VectorSet;
+
+// Data structures for timekeeping
 typedef std::vector< std::forward_list<Node> > AdjacencyList;
 typedef std::vector< std::vector<int> > AdjacencyMatrix;
 
