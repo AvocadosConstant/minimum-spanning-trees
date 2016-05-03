@@ -49,10 +49,14 @@ void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight);
 void read_edges_from_list(AdjacencyList &list, EdgeContainer &container);
 void sort_edge_container(EdgeContainer &container);
 void initialize_set(VectorSet &set, unsigned int v);
+bool are_sets_disjoint(VectorSet &set, int v1, int v2);
+void join_sets(VectorSet &set, int v1, int v2);
 
 void print_list(AdjacencyList &list);
 void print_matrix(AdjacencyMatrix &matrix);
 void print_edge_container(EdgeContainer &container);
+void print_vector_set(VectorSet &set);
+
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
@@ -114,6 +118,7 @@ void SaveResults(char* filename, ns plist, ns pmatrix, ns klist, ns kmatrix) {
     output_file.close();
 }
 
+
 // Prim with an adjacency list 
 ns Prim(AdjacencyList &list) {
     // start clock
@@ -138,6 +143,7 @@ ns Prim(AdjacencyList &list) {
     end = Clock::now();
     return std::chrono::duration_cast<ns> (end - start);
 }
+
 
 // Prim with an adjacency matrix
 ns Prim(AdjacencyMatrix &matrix) {
@@ -164,46 +170,36 @@ ns Prim(AdjacencyMatrix &matrix) {
     return std::chrono::duration_cast<ns> (end - start);
 }
 
+
 // Kruskal with an adjacency list 
 ns Kruskal(AdjacencyList &list) {
     // start clock
     Clock::time_point start, end;
     start = Clock::now();
-
-    /* PSEUDOCODE
-     *
-     * A = null // A is a list of edges. stores MST
-     *
-     * form a set out of each vertex
-     * sort the edges into nondecreasing order by weight
-     * loop through each e in sorted edges:
-     *      if the two sets u,v (vertices of e) are disjoint:
-     *          add the edge to A
-     *          unite the two sets u + v
-    */
     
+    // Organize all edges, smallest weight first
     EdgeContainer all_edges;
     read_edges_from_list(list, all_edges);
-
-    print_edge_container(all_edges);
     sort_edge_container(all_edges);
-    print_edge_container(all_edges);
 
+    // Place each vector in it's own disjoint set
     VectorSet set;
     initialize_set(set, list.size());
 
-    EdgeContainer mst;
+    EdgeContainer mst; // Will contain the edges of minimum spanning tree
 
     for (Edge e : all_edges) {
-        // compare v1 and v2 in disjoint_set
-        // add edge to mst
-        // unite v1 and v2
+        if (are_sets_disjoint(set, e.v1, e.v2)) {
+            mst.push_back(e);
+            join_sets(set, e.v1, e.v2);
+        }
     }
 
     // stop clock and return time
     end = Clock::now();
     return std::chrono::duration_cast<ns> (end - start);
 }
+
 
 // Kruskal with an adjacency matrix
 ns Kruskal(AdjacencyMatrix &matrix) {
@@ -227,6 +223,7 @@ ns Kruskal(AdjacencyMatrix &matrix) {
     end = Clock::now();
     return std::chrono::duration_cast<ns> (end - start);
 }
+
 
 
 // Helper Functions
@@ -297,6 +294,22 @@ void initialize_set(VectorSet &set, unsigned int v) {
     }
 }
 
+bool are_sets_disjoint(VectorSet &set, int v1, int v2) {
+    return ((set[v1] != set[v2])? true : false);
+}
+
+void join_sets(VectorSet &set, int v1, int v2) {
+    int conquering_set = (v1 < v2) ? v1 : v2;
+    int merging_set = (v1 < v2) ? v2: v1;
+
+    for (int i = 0; i < set.size(); i++) {
+        if (set[i] == merging_set)
+            set[i] = conquering_set;
+    }
+}
+
+
+
 void print_list(AdjacencyList &list) {
     std::cout << "Adjacency List" << std::endl;
 
@@ -341,3 +354,11 @@ void print_edge_container(EdgeContainer &container) {
     std::cout << std::endl;
 }
 
+void print_vector_set(VectorSet &set) {
+    std::cout << "Vector Set" << std::endl;
+
+    for (int i = 0; i < set.size(); i++) {
+        std::cout << i << " [" << set[i] << "] -- ";
+    }
+    std::cout << std::endl;
+}
