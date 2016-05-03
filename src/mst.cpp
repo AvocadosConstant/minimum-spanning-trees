@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include <vector>
 #include <forward_list>
 #include <chrono>
@@ -41,6 +42,7 @@ void adjust_list(AdjacencyList &list, int v);
 void adjust_matrix(AdjacencyMatrix &matrix, int v);
 void add_to_list(AdjacencyList &list, int v1, int v2, int weight);
 void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight);
+void read_edges_from_list(AdjacencyList &list, EdgeContainer &all_edges);
 void print_list(AdjacencyList &list);
 void print_matrix(AdjacencyMatrix &matrix);
 
@@ -174,8 +176,9 @@ ns Kruskal(AdjacencyList &list) {
     */
     
     EdgeContainer all_edges;
-    // ReadEdgesFromList(list, all_edges);
+    read_edges_from_list(list, all_edges);
     // Sort Edges, smallest first
+    // Print EdgeContainer
 
     VectorSet set;
     // Resize set to number of vectors
@@ -249,6 +252,23 @@ void add_to_list(AdjacencyList &list, int v1, int v2, int weight) {
 void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight) {
     matrix[v1][v2] = weight;
     matrix[v2][v1] = weight;
+}
+
+void read_edges_from_list(AdjacencyList &list, EdgeContainer &all_edges) {
+    for (int i = 0; i < list.size(); i++) {
+        for (auto n = list[i].begin(); n != list[i].end(); n++) {
+            int v1 = i;
+            int v2 = n -> destination;
+            if (v1 > v2)
+                std::swap(v1,v2);
+
+            Edge e;
+            e.v1 = v1;
+            e.v2 = v2;
+            e.weight = n -> weight;
+            all_edges.push_back(e);
+        }
+    }
 }
 
 void print_list(AdjacencyList &list) {
