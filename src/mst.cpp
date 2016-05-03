@@ -48,6 +48,7 @@ void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight);
 
 void read_edges_from_list(AdjacencyList &list, EdgeContainer &container);
 void sort_edge_container(EdgeContainer &container);
+void initialize_set(VectorSet &set, unsigned int v);
 
 void print_list(AdjacencyList &list);
 void print_matrix(AdjacencyMatrix &matrix);
@@ -189,8 +190,7 @@ ns Kruskal(AdjacencyList &list) {
     print_edge_container(all_edges);
 
     VectorSet set;
-    // Resize set to number of vectors
-    // Initialize set
+    initialize_set(set, list.size());
 
     EdgeContainer mst;
 
@@ -289,6 +289,12 @@ void read_edges_from_list(AdjacencyList &list, EdgeContainer &container) {
 
 void sort_edge_container(EdgeContainer &container) {
     std::sort(container.begin(), container.end());
+}
+void initialize_set(VectorSet &set, unsigned int v) {
+    set.resize(v); // each index represents a vector
+    for (unsigned int i = 0; i < v; i++) {
+        set[i] = i; // set each vector to its own index, represents unique sets
+    }
 }
 
 void print_list(AdjacencyList &list) {
