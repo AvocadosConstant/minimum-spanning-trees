@@ -43,9 +43,10 @@ void adjust_matrix(AdjacencyMatrix &matrix, int v);
 void add_to_list(AdjacencyList &list, int v1, int v2, int weight);
 void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight);
 void read_edges_from_list(AdjacencyList &list, EdgeContainer &all_edges);
+
 void print_list(AdjacencyList &list);
 void print_matrix(AdjacencyMatrix &matrix);
-
+void print_edge_container(EdgeContainer &container);
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
@@ -177,6 +178,7 @@ ns Kruskal(AdjacencyList &list) {
     
     EdgeContainer all_edges;
     read_edges_from_list(list, all_edges);
+    print_edge_container(all_edges);
     // Sort Edges, smallest first
     // Print EdgeContainer
 
@@ -300,6 +302,17 @@ void print_matrix(AdjacencyMatrix &matrix) {
             std::cout << matrix[i][j] << "\t";
         }
         std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+void print_edge_container(EdgeContainer &container) {
+    std::cout << "Edge Container" << std::endl;
+
+    for (unsigned int i = 0; i < container.size(); i++) {
+        std::cout << i << ".\t" <<  container[i].v1 << "->" << container[i].v2
+            << ", w: " << container[i].weight << std::endl;
+
     }
     std::cout << std::endl;
 }
