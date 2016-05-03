@@ -123,8 +123,7 @@ void SaveResults(char* filename, ns plist, ns pmatrix, ns klist, ns kmatrix) {
 // Prim with an adjacency list 
 ns Prim(AdjacencyList &list) {
     // start clock
-    Clock::time_point start, end;
-    start = Clock::now();
+    Clock::time_point start = Clock::now();
 
     /* PSEUDOCODE
      *
@@ -141,7 +140,7 @@ ns Prim(AdjacencyList &list) {
      */
 
     // stop clock and return time
-    end = Clock::now();
+    Clock::time_point end = Clock::now();
     return std::chrono::duration_cast<ns> (end - start);
 }
 
@@ -149,8 +148,7 @@ ns Prim(AdjacencyList &list) {
 // Prim with an adjacency matrix
 ns Prim(AdjacencyMatrix &matrix) {
     // start clock
-    Clock::time_point start, end;
-    start = Clock::now();
+    Clock::time_point start = Clock::now();
 
     /* PSEUDOCODE
      *
@@ -167,7 +165,7 @@ ns Prim(AdjacencyMatrix &matrix) {
      */
 
     // stop clock and return time
-    end = Clock::now();
+    Clock::time_point end = Clock::now();
     return std::chrono::duration_cast<ns> (end - start);
 }
 
@@ -175,8 +173,7 @@ ns Prim(AdjacencyMatrix &matrix) {
 // Kruskal with an adjacency list 
 ns Kruskal(AdjacencyList &list) {
     // start clock
-    Clock::time_point start, end;
-    start = Clock::now();
+    Clock::time_point start = Clock::now();
     
     // Organize all edges, smallest weight first
     EdgeContainer all_edges;
@@ -197,7 +194,7 @@ ns Kruskal(AdjacencyList &list) {
     }
 
     // stop clock and return time
-    end = Clock::now();
+    Clock::time_point end = Clock::now();
     return std::chrono::duration_cast<ns> (end - start);
 }
 
@@ -205,9 +202,7 @@ ns Kruskal(AdjacencyList &list) {
 // Kruskal with an adjacency matrix
 ns Kruskal(AdjacencyMatrix &matrix) {
     // start clock
-    Clock::time_point start, end;
-    start = Clock::now();
-
+    Clock::time_point start = Clock::now();
 
     // Organize all edges, smallest weight first
     EdgeContainer all_edges;
@@ -227,9 +222,8 @@ ns Kruskal(AdjacencyMatrix &matrix) {
         }
     }
 
-
     // stop clock and return time
-    end = Clock::now();
+    Clock::time_point end = Clock::now();
     return std::chrono::duration_cast<ns> (end - start);
 }
 
@@ -360,7 +354,10 @@ void print_matrix(AdjacencyMatrix &matrix) {
     for (unsigned int i = 0; i < matrix.size(); i++) {
         std::cout << i << "\t";
         for (unsigned int j = 0; j < matrix[i].size(); j++) {
-            std::cout << matrix[i][j] << "\t";
+            if (matrix[i][j] == -1)
+                std::cout << "*\t";
+            else
+                std::cout << matrix[i][j] << "\t";
         }
         std::cout << std::endl;
     }
@@ -384,5 +381,5 @@ void print_vector_set(VectorSet &set) {
     for (int i = 0; i < set.size(); i++) {
         std::cout << i << " [" << set[i] << "] -- ";
     }
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl;
 }
