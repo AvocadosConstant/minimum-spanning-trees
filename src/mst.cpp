@@ -47,6 +47,7 @@ void add_to_list(AdjacencyList &list, int v1, int v2, int weight);
 void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight);
 
 void read_edges_from_list(AdjacencyList &list, EdgeContainer &container);
+void read_edges_from_matrix(AdjacencyMatrix &matrix, EdgeContainer &container);
 void sort_edge_container(EdgeContainer &container);
 void initialize_set(VectorSet &set, unsigned int v);
 bool are_sets_disjoint(VectorSet &set, int v1, int v2);
@@ -207,17 +208,25 @@ ns Kruskal(AdjacencyMatrix &matrix) {
     Clock::time_point start, end;
     start = Clock::now();
 
-    /* PSEUDOCODE
-     *
-     * A = null // A is a list of edges. stores MST
-     *
-     * form a set out of each vertex
-     * sort the edges into nondecreasing order by weight
-     * loop through each e in sorted edges:
-     *      if the two sets u,v (vertices of e) are disjoint:
-     *          add the edge to A
-     *          unite the two sets u + v
-    */
+
+    // Organize all edges, smallest weight first
+    EdgeContainer all_edges;
+    read_edges_from_matrix(matrix, all_edges);
+    sort_edge_container(all_edges);
+
+    // Place each vector in it's own disjoint set
+    VectorSet set;
+    initialize_set(set, matrix.size());
+
+    EdgeContainer mst; // Will contain the edges of minimum spanning tree
+
+    for (Edge e : all_edges) {
+        if (are_sets_disjoint(set, e.v1, e.v2)) {
+            mst.push_back(e);
+            join_sets(set, e.v1, e.v2);
+        }
+    }
+
 
     // stop clock and return time
     end = Clock::now();
@@ -235,7 +244,7 @@ void adjust_matrix(AdjacencyMatrix &matrix, int v) {
     matrix.resize(v);
 
     for (int i = 0; i < v; i++) {
-        matrix[i].resize(v,0);
+        matrix[i].resize(v,-1);
     }
 }
 
@@ -279,6 +288,21 @@ void read_edges_from_list(AdjacencyList &list, EdgeContainer &container) {
             e.v1 = v1;
             e.v2 = v2;
             e.weight = n -> weight;
+            container.push_back(e);
+        }
+    }
+}
+
+void read_edges_from_matrix(AdjacencyMatrix &matrix, EdgeContainer &container) {
+    for (int i = 0; i < matrix.size(); i++) {
+        for (int j = 0; j < i; j++) {
+            if (matrix[i][j] == -1)
+                continue;
+
+            Edge e;
+            e.v1 = j;
+            e.v2 = i;
+            e.weight = matrix[i][j];
             container.push_back(e);
         }
     }
