@@ -22,6 +22,9 @@ struct Edge {
     int v1;
     int v2;
     int weight;
+    bool operator<(const Edge& rhs) const {
+        return weight < rhs.weight;
+    }
 };
 
 typedef std::vector<Edge> EdgeContainer;
@@ -42,7 +45,9 @@ void adjust_list(AdjacencyList &list, int v);
 void adjust_matrix(AdjacencyMatrix &matrix, int v);
 void add_to_list(AdjacencyList &list, int v1, int v2, int weight);
 void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight);
-void read_edges_from_list(AdjacencyList &list, EdgeContainer &all_edges);
+
+void read_edges_from_list(AdjacencyList &list, EdgeContainer &container);
+void sort_edge_container(EdgeContainer &container);
 
 void print_list(AdjacencyList &list);
 void print_matrix(AdjacencyMatrix &matrix);
@@ -178,9 +183,10 @@ ns Kruskal(AdjacencyList &list) {
     
     EdgeContainer all_edges;
     read_edges_from_list(list, all_edges);
+
     print_edge_container(all_edges);
-    // Sort Edges, smallest first
-    // Print EdgeContainer
+    sort_edge_container(all_edges);
+    print_edge_container(all_edges);
 
     VectorSet set;
     // Resize set to number of vectors
@@ -256,7 +262,15 @@ void add_to_matrix(AdjacencyMatrix &matrix, int v1, int v2, int weight) {
     matrix[v2][v1] = weight;
 }
 
-void read_edges_from_list(AdjacencyList &list, EdgeContainer &all_edges) {
+void read_edges_from_list(AdjacencyList &list, EdgeContainer &container) {
+    /* This code does not check if an edge has already been included.
+     * Since these are undirected graphs each edge will be included twice.
+     * Kruskal's algorithm checks if the vectors of the edge are disjointed, 
+     * so repeat edges will not affect the results.
+     * It would take n^2 time to check if an edge has already been included,
+     * meanwhile the cost of redundant edges is 2n. I decided to use the
+     * solution with the least bottleneck, since we are coding for time.
+     * */
     for (int i = 0; i < list.size(); i++) {
         for (auto n = list[i].begin(); n != list[i].end(); n++) {
             int v1 = i;
@@ -268,9 +282,13 @@ void read_edges_from_list(AdjacencyList &list, EdgeContainer &all_edges) {
             e.v1 = v1;
             e.v2 = v2;
             e.weight = n -> weight;
-            all_edges.push_back(e);
+            container.push_back(e);
         }
     }
+}
+
+void sort_edge_container(EdgeContainer &container) {
+    std::sort(container.begin(), container.end());
 }
 
 void print_list(AdjacencyList &list) {
