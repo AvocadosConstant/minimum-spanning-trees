@@ -27,6 +27,9 @@ struct Edge {
     bool operator<(const Edge& rhs) const {
         return weight < rhs.weight;
     }
+    bool operator==(const Edge& rhs) const {
+        return v1 == rhs.v1 && v2 == rhs.v2;
+    }
 };
 
 typedef std::vector<Edge> EdgeContainer;
@@ -37,6 +40,8 @@ typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::nanoseconds ns;
 
 void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix, int &number_of_vertices, int &number_of_edges);
+void GenerateInput(int v, int e, AdjacencyList &list, AdjacencyMatrix &matrix, int &number_of_vertices, int &number_of_edges);
+Edge RandomEdgeFromVertices(std::vector<int> added, int weight_max, int v1);
 void SaveResults(char* filename, int v, int e, ns plist, ns pmatrix, ns klist, ns kmatrix);
 ns Prim(AdjacencyList &list);
 ns Prim(AdjacencyMatrix &matrix);
@@ -67,25 +72,30 @@ int main(int argc, char* argv[]) {
         return -1;
     }
     
-    AdjacencyList list;
-    AdjacencyMatrix matrix;
-    int number_of_vertices, number_of_edges;
     
-    ReadInput(argv[1], list, matrix, number_of_vertices, number_of_edges);
-
-    ns t_prim_list = Prim(list);
-    ns t_prim_matrix = Prim(matrix);
-    ns t_kruskal_list = Kruskal(list);
-    ns t_kruskal_matrix = Kruskal(matrix);
-
-
-    SaveResults(argv[2], number_of_vertices, number_of_edges, 
-            t_prim_list, t_prim_matrix, 
-            t_kruskal_list, t_kruskal_matrix);
-
+    //ReadInput(argv[1], list, matrix, number_of_vertices, number_of_edges);
     
-    print_matrix(matrix);
-    print_list(list);
+    int v = 100;
+    for(int i = v-1; i < ((v*v-v)/2); i+= 10) {
+        AdjacencyList list;
+        AdjacencyMatrix matrix;
+        int number_of_vertices, number_of_edges;
+
+        GenerateInput(v, i, list, matrix, number_of_vertices, number_of_edges);
+
+        ns t_prim_list = Prim(list);
+        ns t_prim_matrix = Prim(matrix);
+        ns t_kruskal_list = Kruskal(list);
+        ns t_kruskal_matrix = Kruskal(matrix);
+
+        SaveResults(argv[2], number_of_vertices, number_of_edges, 
+                t_prim_list, t_prim_matrix, 
+                t_kruskal_list, t_kruskal_matrix);
+
+        
+        //print_matrix(matrix);
+        //print_list(list);
+    }
 }
 
 
@@ -110,6 +120,68 @@ void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix, int
         add_to_matrix(matrix, v1, v2, weight);
     }
     input_file.close();
+}
+
+void GenerateInput(int v, int e, AdjacencyList &list, AdjacencyMatrix &matrix, int &number_of_vertices, int &number_of_edges) {
+    // Read in parameters
+    number_of_vertices = v;
+    number_of_edges = e;
+    
+    // Scale adj_list and adj_matrix
+    adjust_list(list, number_of_vertices);
+    adjust_matrix(matrix, number_of_vertices);
+    
+    std::vector<int> added;
+    std::vector<int> unadded;
+    for(int i = 0; i < v; i++) unadded.push_back(i);
+
+    EdgeContainer edges;
+
+    // Generate a spanning tree first
+    srand(time(NULL));
+    for(int i = 0; i < v; i++) {
+        int chosen_index = rand() % unadded.size();
+        int chosen = unadded[chosen_index];
+        added.push_back(chosen);    
+        unadded.erase(unadded.begin() + chosen_index);
+        if(added.size() > 1) {  // Enough verts to make an edge
+            Edge edge = RandomEdgeFromVertices(added, 100, chosen);
+            //printf("Chosen new node is %d\nNew edge %d->%d of weight %d added.\n", chosen, e.v1, e.v2, e.weight);
+            //while(std::find(edges.begin(), edges.end(), e = RandomEdgeFromVertices(added, 100, chosen)) == edges.end()); 
+            edges.push_back(edge);
+            add_to_list(list, edge.v1, edge.v2, edge.weight);
+            add_to_matrix(matrix, edge.v1, edge.v2, edge.weight);
+        }
+        //printf("Added:\t\t");
+        //for(auto i : added) printf("%d\t", i);
+        //printf("\nUnadded:\t");
+        //for(auto i : unadded) printf("%d\t", i);
+        //printf("\n\n");
+    }
+
+    // Generate remaining edges
+    for(int i = v; i < e; i++) {
+        Edge edge = RandomEdgeFromVertices(added, 100, rand() % v);
+        edges.push_back(edge);
+        add_to_list(list, edge.v1, edge.v2, edge.weight);
+        add_to_matrix(matrix, edge.v1, edge.v2, edge.weight);
+    }
+
+    //printf("Generated Edges:\n");
+    //for(auto e : edges) printf("%d->%d of weight %d\n", e.v1, e.v2, e.weight);
+    //printf("\n");
+}
+
+// Creates a random edge from a given vertex. To generate an edge with no set endpoints, pass a random value as v1 
+Edge RandomEdgeFromVertices(std::vector<int> added, int weight_max, int v1) {
+    Edge e;
+    int v2 = v1;
+    // Pick a v2 that's not v1
+    while(v2 == v1) v2 = added[rand() % added.size()];
+    e.v1 = std::min(v1,v2);
+    e.v2 = std::max(v1,v2);
+    e.weight = rand() % weight_max + 1;
+    return e;
 }
 
 // Output handler
