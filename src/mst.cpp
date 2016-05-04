@@ -36,8 +36,8 @@ typedef std::vector<int> VectorSet;
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::nanoseconds ns;
 
-void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix);
-void SaveResults(char* filename, ns plist, ns pmatrix, ns klist, ns kmatrix);
+void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix, int &number_of_vertices, int &number_of_edges);
+void SaveResults(char* filename, int v, int e, ns plist, ns pmatrix, ns klist, ns kmatrix);
 ns Prim(AdjacencyList &list);
 ns Prim(AdjacencyMatrix &matrix);
 ns Kruskal(AdjacencyList &list);
@@ -69,15 +69,18 @@ int main(int argc, char* argv[]) {
     
     AdjacencyList list;
     AdjacencyMatrix matrix;
+    int number_of_vertices, number_of_edges;
     
-    ReadInput(argv[1], list, matrix);
+    ReadInput(argv[1], list, matrix, number_of_vertices, number_of_edges);
 
     ns t_prim_list = Prim(list);
     ns t_prim_matrix = Prim(matrix);
     ns t_kruskal_list = Kruskal(list);
     ns t_kruskal_matrix = Kruskal(matrix);
 
-    SaveResults(argv[2], t_prim_list, t_prim_matrix, 
+
+    SaveResults(argv[2], number_of_vertices, number_of_edges, 
+            t_prim_list, t_prim_matrix, 
             t_kruskal_list, t_kruskal_matrix);
 
     
@@ -87,17 +90,16 @@ int main(int argc, char* argv[]) {
 
 
 // Input handler
-void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix) {
+void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix, int &number_of_vertices, int &number_of_edges) {
     std::ifstream input_file;
     input_file.open(filename);
     
     // Read in parameters
-    int number_of_vectors, number_of_edges;
-    input_file >> number_of_vectors >> number_of_edges;
+    input_file >> number_of_vertices >> number_of_edges;
     
     // Scale adj_list and adj_matrix
-    adjust_list(list, number_of_vectors);
-    adjust_matrix(matrix, number_of_vectors);
+    adjust_list(list, number_of_vertices);
+    adjust_matrix(matrix, number_of_vertices);
     
     // Read in Edges
     int v1, v2, weight;
@@ -111,11 +113,12 @@ void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix) {
 }
 
 // Output handler
-void SaveResults(char* filename, ns plist, ns pmatrix, ns klist, ns kmatrix) {
+void SaveResults(char* filename, int v, int e, ns plist, ns pmatrix, ns klist, ns kmatrix) {
     std::ofstream output_file;
     output_file.open(filename);
 
-    output_file << plist.count() << ", " << pmatrix.count() << ", " 
+    output_file << v << ", " << e << ", " 
+        << plist.count() << ", " << pmatrix.count() << ", " 
         << klist.count() << ", " << kmatrix.count() << std::endl;
 
     output_file.close();
