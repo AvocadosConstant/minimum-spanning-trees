@@ -189,7 +189,7 @@ ns Kruskal(AdjacencyList &list) {
     for (Edge e : all_edges) {
         if (are_sets_disjoint(set, e.v1, e.v2)) {
             mst.push_back(e);
-            join_sets(set, e.v1, e.v2);
+            join_sets(set, set[e.v1], set[e.v2]);
         }
     }
 
@@ -218,7 +218,7 @@ ns Kruskal(AdjacencyMatrix &matrix) {
     for (Edge e : all_edges) {
         if (are_sets_disjoint(set, e.v1, e.v2)) {
             mst.push_back(e);
-            join_sets(set, e.v1, e.v2);
+            join_sets(set, set[e.v1], set[e.v2]);
         }
     }
 
@@ -316,9 +316,9 @@ bool are_sets_disjoint(VectorSet &set, int v1, int v2) {
     return ((set[v1] != set[v2])? true : false);
 }
 
-void join_sets(VectorSet &set, int v1, int v2) {
-    int conquering_set = (v1 < v2) ? v1 : v2;
-    int merging_set = (v1 < v2) ? v2: v1;
+void join_sets(VectorSet &set, int a, int b) {
+    int conquering_set = (a < b) ? a : b;
+    int merging_set = (a < b) ? a: b;
 
     for (int i = 0; i < set.size(); i++) {
         if (set[i] == merging_set)
