@@ -65,9 +65,9 @@
 \section{Prim's Algorithm}\frame{\sectionpage}
 \subsection{Algorithm}
 \begin{frame}{Main Idea}
-    \begin{itemize}
-    \item initialize all vertices to infinitely away
-    \end{itemize}
+    \begin{center}
+    Expand the tree by adding the lightest connecting edge.
+    \end{center}
 \end{frame}
 
 \begin{frame}{Pseudocode}
@@ -89,8 +89,8 @@
 \begin{frame}{Main Idea}
     \begin{itemize}
     \item Separate vertices into disjoint sets
-    \item Reorder all edges by smallest weight first.
-    \item Loop through edges, add it to MST if its vertices are disjoint.
+    \item Reorder all edges by smallest weight first
+    \item Loop through edges, add it to tree if its vertices are disjoint
     \end{itemize}
 \end{frame}
 
@@ -166,6 +166,11 @@ for (Edge e : all_edges)
 \begin{frame}{Limitations and Future Work}
     What limitations does your project currently exhibit? If you had another
     month, what could you improve? What additional tests would you run?
+
+    \begin{itemize}
+    \item Kruskal's can finish early by checking if there is only 1 set. If
+    that's the case, the for loop will finish in $|V|$ instead of $|E|$.
+    \end{itemize}
 \end{frame}
 
 
