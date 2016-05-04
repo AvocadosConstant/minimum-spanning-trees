@@ -30,8 +30,11 @@
 
 \subsection{Minimum Spanning Trees}
 \begin{frame}{Minimum Spanning Trees}
+    \begin{center}
     A minimum spanning tree connects all the vertices in a graph together into
     a tree with the lightest weight possible.
+    \includegraphics[scale=0.3]{mst}
+    \end{center}
 \end{frame}
 
 \subsection{Approach}
@@ -188,16 +191,15 @@ for (Edge e : all_edges)
 
 \subsection{Limitations}
 \begin{frame}{Limitations and Future Work}
-    What limitations does your project currently exhibit? If you had another
-    month, what could you improve? What additional tests would you run?
-
     \begin{itemize}
+    \item Representing undirected graphs as adjacency lists or adjacency
+    matrices implies a inclusion of every node.
+    \item Kruskal's does not take advantage of the graph implementation.
     \item Kruskal's can finish early by checking if there is only 1 set. If
     that's the case, the for loop will finish in $|V|$ instead of $|E|$.
     \end{itemize}
 \end{frame}
 
-\subsection{Questions}
 \begin{frame}{Questions}
     \begin{center}
     Thank you.\\
