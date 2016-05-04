@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <queue>
+#include <limits.h>
 #include <forward_list>
 #include <chrono>
 
@@ -123,20 +125,27 @@ ns Prim(AdjacencyMatrix &matrix) {
     // start clock
     Clock::time_point start, end;
     start = Clock::now();
+    
+    printf("Prim with an adjacency matrix\n");
 
-    /* PSEUDOCODE
-     *
-     * Q = V
-     * key[v] = infinity for all v in V
-     * key[s] = 0 // s is the starting vertex
-     *
-     * while (!Q.empty()):
-     *      u = Q.extract_min()
-     *      for each v adjacent to u:
-     *          if (v in Q and u->v.weight < key[v]):
-     *              key[v] = u->v.weight
-     *              pi[v] = u
-     */
+    std::priority_queue<Node> q;
+
+    int* keys = new int[matrix.size()]();
+    keys[0] = 0;
+
+    // initialize all but first to inf
+    for(unsigned int i = 1; i < matrix.size(); i++) keys[i] = INT_MAX;
+
+    for(unsigned int i = 0; i < matrix.size(); i++) printf("%d\t",keys[i]);
+    printf("\n\n");
+
+    // while (!Q.empty()):
+    //      u = Q.extract_min()
+    //      for each v adjacent to u:
+    //          if (v in Q and u->v.weight < key[v]):
+    //              key[v] = u->v.weight
+    //              pi[v] = u
+    ///
 
     // stop clock and return time
     end = Clock::now();
