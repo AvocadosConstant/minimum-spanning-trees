@@ -1,0 +1,7 @@
+# Latex junk files
+*.aux  
+*.nav  
+*.log  
+*.out  
+*.snm  
+*.toc
