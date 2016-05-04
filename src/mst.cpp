@@ -115,7 +115,7 @@ void ReadInput(char* filename, AdjacencyList &list, AdjacencyMatrix &matrix, int
 // Output handler
 void SaveResults(char* filename, int v, int e, ns plist, ns pmatrix, ns klist, ns kmatrix) {
     std::ofstream output_file;
-    output_file.open(filename);
+    output_file.open(filename, std::ios::out | std::ios::app );
 
     output_file << v << ", " << e << ", " 
         << plist.count() << ", " << pmatrix.count() << ", " 
