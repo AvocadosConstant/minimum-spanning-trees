@@ -127,19 +127,56 @@ ns Prim(AdjacencyList &list) {
     // start clock
     Clock::time_point start = Clock::now();
 
-    /* PSEUDOCODE
-     *
-     * Q = V
-     * key[v] = infinity for all v in V
-     * key[s] = 0 // s is the starting vertex
-     *
-     * while (!Q.empty()):
-     *      u = Q.extract_min()
-     *      for each v adjacent to u:
-     *          if (v in Q and u->v.weight < key[v]):
-     *              key[v] = u->v.weight
-     *              pi[v] = u
-     */
+    EdgeContainer mst;
+    std::vector<Node> keys;
+    Node tmp;
+    tmp.weight = -1;
+    tmp.destination = -1;
+    keys.push_back(tmp);
+    for (unsigned int i = 1; i < list.size(); i++) {
+        Node tmp;
+        tmp.weight = INT_MAX;
+        tmp.destination = -1;
+        keys.push_back(tmp);
+    }
+    
+    for(unsigned int i = 1; i < list.size(); i++) {
+        // Loop through keys looking for vertices in the mst (==-1)
+        for(unsigned int j = 0; j < keys.size(); j++) {
+            // node j is already in the mst
+            if(keys[j].weight == -1) { 
+                for (auto k = list[j].begin(); k != list[j].end(); k++) {
+                    int dist_to_mst = k -> weight;
+                    if(dist_to_mst > 0 && dist_to_mst < keys[k->destination].weight) {
+                        keys[k->destination].weight = dist_to_mst;
+                        keys[k->destination].destination = j;
+                    }
+                }
+            }
+        }
+        
+        // Determine the vertex closest to the mst
+        int closest_dist = INT_MAX;
+        int closest_v = -1;
+        for(unsigned int j = 0; j < keys.size(); j++) {
+            if(keys[j].weight > 0 && keys[j].weight < closest_dist) {
+                closest_dist = keys[j].weight;
+                closest_v = j;
+            }
+        }
+        Edge e;
+        e.v1 = closest_v;
+        e.v2 = keys[closest_v].destination;
+        e.weight = keys[closest_v].weight;
+        mst.push_back(e);
+
+        // Set closest vertex to -1 to "include" it in the mst
+        keys[closest_v].weight = -1;
+    }
+
+    //printf("Minimum Spanning Tree Edges:\n");
+    //for(auto e : mst) printf("%d->%d of weight %d\n", e.v1, e.v2, e.weight);
+    //printf("\n");
 
     // stop clock and return time
     Clock::time_point end = Clock::now();
