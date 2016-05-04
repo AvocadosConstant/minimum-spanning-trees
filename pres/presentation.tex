@@ -81,11 +81,32 @@
 \section{Kruskal's Algorithm}\frame{\sectionpage}
 \subsection{Algorithm}
 \begin{frame}{Main Idea}
-    Basic idea of the algorithm.
+    \begin{itemize}
+    \item Separate vectors into disjoint sets
+    \item Reorder all edges by smallest weight first.
+    \item Loop through edges, add it to MST if its vectors are disjoint.
+    \end{itemize}
 \end{frame}
 
+
+\defverbatim[colored]\v {
+\begin{verbatim}
+EdgeContainer all_edges = graph.sorted_edges()
+
+VectorSet set = disjoint_set(v.size)
+EdgeContainer MST = empty
+
+for (Edge e : all_edges)
+    v1 = e.source;
+    v2 = e.destination
+    if (set.are_vectors_disjoint(v1,v2))
+        mst += e;
+        set.join(v1,v2)
+\end{verbatim}
+}
+
 \begin{frame}{Pseudocode}
-    extemely neat and clear fits in one slide pseudocode.
+\v
 \end{frame}
 
 \subsection{Analysis}
