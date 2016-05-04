@@ -32,11 +32,8 @@ output*
 *.exe
 *.out
 *.app
-
 *.aux
-
 *.log
-
 *.nav
-
 *.snm
+*.toc

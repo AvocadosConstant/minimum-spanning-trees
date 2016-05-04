@@ -127,19 +127,56 @@ ns Prim(AdjacencyList &list) {
     // start clock
     Clock::time_point start = Clock::now();
 
-    /* PSEUDOCODE
-     *
-     * Q = V
-     * key[v] = infinity for all v in V
-     * key[s] = 0 // s is the starting vertex
-     *
-     * while (!Q.empty()):
-     *      u = Q.extract_min()
-     *      for each v adjacent to u:
-     *          if (v in Q and u->v.weight < key[v]):
-     *              key[v] = u->v.weight
-     *              pi[v] = u
-     */
+    EdgeContainer mst;
+    std::vector<Node> keys;
+    Node tmp;
+    tmp.weight = -1;
+    tmp.destination = -1;
+    keys.push_back(tmp);
+    for (unsigned int i = 1; i < list.size(); i++) {
+        Node tmp;
+        tmp.weight = INT_MAX;
+        tmp.destination = -1;
+        keys.push_back(tmp);
+    }
+    
+    for(unsigned int i = 1; i < list.size(); i++) {
+        // Loop through keys looking for vertices in the mst (==-1)
+        for(unsigned int j = 0; j < keys.size(); j++) {
+            // node j is already in the mst
+            if(keys[j].weight == -1) { 
+                for (auto k = list[j].begin(); k != list[j].end(); k++) {
+                    int dist_to_mst = k -> weight;
+                    if(dist_to_mst > 0 && dist_to_mst < keys[k->destination].weight) {
+                        keys[k->destination].weight = dist_to_mst;
+                        keys[k->destination].destination = j;
+                    }
+                }
+            }
+        }
+        
+        // Determine the vertex closest to the mst
+        int closest_dist = INT_MAX;
+        int closest_v = -1;
+        for(unsigned int j = 0; j < keys.size(); j++) {
+            if(keys[j].weight > 0 && keys[j].weight < closest_dist) {
+                closest_dist = keys[j].weight;
+                closest_v = j;
+            }
+        }
+        Edge e;
+        e.v1 = closest_v;
+        e.v2 = keys[closest_v].destination;
+        e.weight = keys[closest_v].weight;
+        mst.push_back(e);
+
+        // Set closest vertex to -1 to "include" it in the mst
+        keys[closest_v].weight = -1;
+    }
+
+    //printf("Minimum Spanning Tree Edges:\n");
+    //for(auto e : mst) printf("%d->%d of weight %d\n", e.v1, e.v2, e.weight);
+    //printf("\n");
 
     // stop clock and return time
     Clock::time_point end = Clock::now();
@@ -150,27 +187,58 @@ ns Prim(AdjacencyList &list) {
 // Prim with an adjacency matrix
 ns Prim(AdjacencyMatrix &matrix) {
     // start clock
-    printf("Prim with an adjacency matrix\n");
     Clock::time_point start = Clock::now();
 
-    std::priority_queue<Node> q;
+    EdgeContainer mst;
+    std::vector<Node> keys;
+    Node tmp;
+    tmp.weight = -1;
+    tmp.destination = -1;
+    keys.push_back(tmp);
+    for (unsigned int i = 1; i < matrix.size(); i++) {
+        Node tmp;
+        tmp.weight = INT_MAX;
+        tmp.destination = -1;
+        keys.push_back(tmp);
+    }
+    
+    for(unsigned int i = 1; i < matrix.size(); i++) {
+        // Loop through keys looking for vertices in the mst (==-1)
+        for(unsigned int j = 0; j < keys.size(); j++) {
+            // node j is already in the mst
+            if(keys[j].weight == -1) { 
+                for(unsigned int k = 0; k < matrix[j].size(); k++) {
+                    int dist_to_mst = matrix[j][k];
+                    if(dist_to_mst > 0 && dist_to_mst < keys[k].weight) {
+                        keys[k].weight = matrix[j][k];
+                        keys[k].destination = j;
+                    }
+                }
+            }
+        }
+        
+        // Determine the vertex closest to the mst
+        int closest_dist = INT_MAX;
+        int closest_v = -1;
+        for(unsigned int j = 0; j < keys.size(); j++) {
+            if(keys[j].weight > 0 && keys[j].weight < closest_dist) {
+                closest_dist = keys[j].weight;
+                closest_v = j;
+            }
+        }
+        Edge e;
+        e.v1 = closest_v;
+        e.v2 = keys[closest_v].destination;
+        e.weight = keys[closest_v].weight;
+        mst.push_back(e);
 
-    int* keys = new int[matrix.size()]();
-    keys[0] = 0;
+        // Set closest vertex to -1 to "include" it in the mst
+        keys[closest_v].weight = -1;
+    }
 
-    // initialize all but first to inf
-    for(unsigned int i = 1; i < matrix.size(); i++) keys[i] = INT_MAX;
-
-    for(unsigned int i = 0; i < matrix.size(); i++) printf("%d\t",keys[i]);
-    printf("\n\n");
-
-    // while (!Q.empty()):
-    //      u = Q.extract_min()
-    //      for each v adjacent to u:
-    //          if (v in Q and u->v.weight < key[v]):
-    //              key[v] = u->v.weight
-    //              pi[v] = u
-    ///
+    //printf("Minimum Spanning Tree Edges:\n");
+    //for(auto e : mst) printf("%d->%d of weight %d\n", e.v1, e.v2, e.weight);
+    //printf("\n");
 
     // stop clock and return time
     Clock::time_point end = Clock::now();
@@ -279,7 +347,7 @@ void read_edges_from_list(AdjacencyList &list, EdgeContainer &container) {
      * meanwhile the cost of redundant edges is 2n. I decided to use the
      * solution with the least bottleneck, since we are coding for time.
      * */
-    for (int i = 0; i < list.size(); i++) {
+    for (unsigned int i = 0; i < list.size(); i++) {
         for (auto n = list[i].begin(); n != list[i].end(); n++) {
             int v1 = i;
             int v2 = n -> destination;
@@ -296,8 +364,8 @@ void read_edges_from_list(AdjacencyList &list, EdgeContainer &container) {
 }
 
 void read_edges_from_matrix(AdjacencyMatrix &matrix, EdgeContainer &container) {
-    for (int i = 0; i < matrix.size(); i++) {
-        for (int j = 0; j < i; j++) {
+    for (unsigned int i = 0; i < matrix.size(); i++) {
+        for (unsigned int j = 0; j < i; j++) {
             if (matrix[i][j] == -1)
                 continue;
 
@@ -328,7 +396,7 @@ void join_sets(VectorSet &set, int a, int b) {
     int conquering_set = (a < b) ? a : b;
     int merging_set = (a < b) ? a: b;
 
-    for (int i = 0; i < set.size(); i++) {
+    for (unsigned int i = 0; i < set.size(); i++) {
         if (set[i] == merging_set)
             set[i] = conquering_set;
     }
@@ -386,7 +454,7 @@ void print_edge_container(EdgeContainer &container) {
 void print_vector_set(VectorSet &set) {
     std::cout << "Vector Set" << std::endl;
 
-    for (int i = 0; i < set.size(); i++) {
+    for (unsigned int i = 0; i < set.size(); i++) {
         std::cout << i << " [" << set[i] << "] -- ";
     }
     std::cout << std::endl << std::endl;
