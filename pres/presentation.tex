@@ -52,7 +52,13 @@
 
 \subsection{Problem Statement}
 \begin{frame}{Problem Statement}
-    What's the problem?!?
+    \begin{center}
+    How do Prim's and Kruskal's algorithms handle graphs of different
+    densities?\\
+    \bigskip
+    Do they depend on whether the graph is implemented as an 
+    adjacency list or an adjacency matrix?
+    \end{center}
 \end{frame}
 
 
@@ -66,15 +72,13 @@
     extemely neat and clear fits in one slide pseudocode.
 \end{frame}
 
-\subsection{Analysis}
-\begin{frame}{Analysis of Prim}
-    interesting features, time complexity, why?
-\end{frame}
-
 \subsection{Implementation}
 \begin{frame}{Implementation Details}
-    Discuss key data structures, classes, and functions used in the
-    implementation.
+\end{frame}
+
+\subsection{Analysis}
+\begin{frame}{Analysis of Prim's}
+    interesting features, time complexity, why?
 \end{frame}
 
 
@@ -89,7 +93,7 @@
 \end{frame}
 
 
-\defverbatim[colored]\v {
+\defverbatim[colored]\vkruskal {
 \begin{verbatim}
 EdgeContainer all_edges = graph.sorted_edges()
 
@@ -104,25 +108,44 @@ for (Edge e : all_edges)
         set.join(v1,v2)
 \end{verbatim}
 }
-
 \begin{frame}{Pseudocode}
-\v
-\end{frame}
-
-\subsection{Analysis}
-\begin{frame}{Analysis of Kruskal}
-    interesting features, time complexity, why?
+\vkruskal
 \end{frame}
 
 \subsection{Implementation}
-\begin{frame}{Implementation Details}
+\begin{frame}{Key Data Structures}
+    \begin{itemize}
+    \item A vector of all the sorted edges
+    \item A vector for holding edges included to minimum spanning tree
+    \item A vector representing disjoint sets
+    \end{itemize}
     Discuss key data structures, classes, and functions used in the
     implementation.
 \end{frame}
 
+\begin{frame}{Functions}
+    \begin{itemize}
+    \item ReadFromAdjacencyList or ReadFromAdjacencyMatrix
+    \item SortEdgesSmallestFirst, size $|E|\log||E|$
+    \item CreateDisjointSets, size $|V|$
+    \item JoinSets, size $|V|$
+    \item AreSetsDisjoint, size $O(1)$
+    \end{itemize}
+\end{frame}
+
+\subsection{Analysis}
+\begin{frame}{Analysis of Kruskal's}
+    \begin{itemize}
+    \item Only uses graph representation for retrieving edges
+    \item Sorting the edges is of size $|E|\log|E|$
+    \item Meanwhile, looping through edges is of size $|E|$
+    \item The time complexity is carried by the sort, $|E|\log|E|$
+    \item Kruskal's works well with sparse graphs
+    \end{itemize}   
+\end{frame}
 
 
-\section{Experimental Plan}\frame{\sectionpage}
+\section{Results}\frame{\sectionpage}
 \subsection{Demo}
 \begin{frame}{Demonstration}
 \end{frame}
