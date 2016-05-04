@@ -91,14 +91,30 @@ while (keys.someone_not_in_tree()) {
 
 \subsection{Implementation}
 \begin{frame}{Key Data Structures}
+    \begin{itemize}
+    \item A vector of the vertices with the following information:\\
+        \{weight to tree, nearest tree vertice\}
+    \item A vector for holding edges included to minimum spanning tree
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Functions}
-\begin{frame}
+    \begin{itemize}
+    \item InitializeVertices, with a run time of $|V|$
+    \item ExtractMin, with a run time of $lg|V|$
+    \item UpdateDistances, with a run time of $|E|$
+    \end{itemize}
+\end{frame}
 
 \subsection{Analysis}
 \begin{frame}{Analysis of Prim's}
-    interesting features, time complexity, why?
+    \begin{itemize}
+    \item Prim's is dependent on analyzing all of the nodes
+    \item Extracting the minimum vertices has a running time of $|V|\lg|V|$
+    \item Updating the distances has a running time of $|E|lg|V|$ 
+    \item Prim's running time is of the form $O(|V|lg|V|) + O(|E|\lg|V|)$
+    \item Prim's is suitable for dealing with dense graphs.
+    \end{itemize}
 \end{frame}
 
 
@@ -144,10 +160,10 @@ for (Edge e : all_edges)
 \begin{frame}{Functions}
     \begin{itemize}
     \item ReadFromAdjacencyList or ReadFromAdjacencyMatrix
-    \item SortEdgesSmallestFirst, size $|E|\log||E|$
-    \item CreateDisjointSets, size $|V|$
-    \item JoinSets, size $|V|$
-    \item AreSetsDisjoint, size $O(1)$
+    \item SortEdgesSmallestFirst has a running time of $|E|\lg||E|$
+    \item CreateDisjointSets has a running time of $|V|$
+    \item JoinSets has a running time of $|V|$
+    \item AreSetsDisjoint has a running time of $O(1)$
     \end{itemize}
 \end{frame}
 
@@ -155,9 +171,9 @@ for (Edge e : all_edges)
 \begin{frame}{Analysis of Kruskal's}
     \begin{itemize}
     \item Only uses graph representation for retrieving edges
-    \item Sorting the edges is of size $|E|\log|E|$
-    \item Meanwhile, looping through edges is of size $|E|$
-    \item The time complexity is carried by the sort, $|E|\log|E|$
+    \item Sorting the edges has a running time of $|E|\lg|E|$
+    \item Meanwhile, looping through edges has a running time of $|E|$
+    \item The time complexity is carried by the sort, $|E|\lg|E|$
     \item Kruskal's works well with sparse graphs
     \end{itemize}   
 \end{frame}
@@ -198,8 +214,10 @@ for (Edge e : all_edges)
 \end{frame}
 
 \begin{frame}{Questions}
+    \begin{center}
     Thank you.\\
     Any questions?
+    \end{center}
 \end{frame}
 
 \end{document}
