@@ -65,7 +65,9 @@
 \section{Prim's Algorithm}\frame{\sectionpage}
 \subsection{Algorithm}
 \begin{frame}{Main Idea}
-    Basic idea of the algorithm.
+    \begin{itemize}
+    \item initialize all vertices to infinitely away
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Pseudocode}
@@ -86,9 +88,9 @@
 \subsection{Algorithm}
 \begin{frame}{Main Idea}
     \begin{itemize}
-    \item Separate vectors into disjoint sets
+    \item Separate vertices into disjoint sets
     \item Reorder all edges by smallest weight first.
-    \item Loop through edges, add it to MST if its vectors are disjoint.
+    \item Loop through edges, add it to MST if its vertices are disjoint.
     \end{itemize}
 \end{frame}
 
@@ -97,13 +99,13 @@
 \begin{verbatim}
 EdgeContainer all_edges = graph.sorted_edges()
 
-VectorSet set = disjoint_set(v.size)
+VerticesSet set = disjoint_set(v.size)
 EdgeContainer MST = empty
 
 for (Edge e : all_edges)
     v1 = e.source;
     v2 = e.destination
-    if (set.are_vectors_disjoint(v1,v2))
+    if (set.are_vertices_disjoint(v1,v2))
         mst += e;
         set.join(v1,v2)
 \end{verbatim}
@@ -119,8 +121,6 @@ for (Edge e : all_edges)
     \item A vector for holding edges included to minimum spanning tree
     \item A vector representing disjoint sets
     \end{itemize}
-    Discuss key data structures, classes, and functions used in the
-    implementation.
 \end{frame}
 
 \begin{frame}{Functions}
