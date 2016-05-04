@@ -70,13 +70,31 @@
     \end{center}
 \end{frame}
 
+\defverbatim[colored]\vprim {
+\begin{verbatim}
+EdgeContainer MST = empty
+VerticesContainer keys = graph.vertices
+for (v in keys) v.distance = infinity
+keys[0].distance = 0
+
+while (keys.someone_not_in_tree()) {
+    Vertice v = keys.get_smallest()
+    keys.add_to_tree(v)
+    keys.update_distances(graph[v].neighbors)
+    MST += v.edge
+}
+\end{verbatim}
+}
 \begin{frame}{Pseudocode}
-    extemely neat and clear fits in one slide pseudocode.
+\vprim
 \end{frame}
 
 \subsection{Implementation}
-\begin{frame}{Implementation Details}
+\begin{frame}{Key Data Structures}
 \end{frame}
+
+\begin{frame}{Functions}
+\begin{frame}
 
 \subsection{Analysis}
 \begin{frame}{Analysis of Prim's}
@@ -106,7 +124,7 @@ for (Edge e : all_edges)
     v1 = e.source;
     v2 = e.destination
     if (set.are_vertices_disjoint(v1,v2))
-        mst += e;
+        MST += e;
         set.join(v1,v2)
 \end{verbatim}
 }
